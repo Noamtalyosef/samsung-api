@@ -58,7 +58,7 @@ objectsRouter.get("/getSome", expressAsyncHandler(async(req,res)=>{
             console.log("in create  ndpoint")
             const obj = req.body;
             console.log(obj)
-            const createdObjId = await objCollection.insertOne({obj});
+            const createdObjId = await objCollection.insertOne({...obj});
             console.log(createdObjId)
             res.send(createdObjId);
         }
