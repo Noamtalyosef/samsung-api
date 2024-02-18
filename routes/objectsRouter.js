@@ -37,7 +37,7 @@ objectsRouter.get("/:_id", expressAsyncHandler(async(req,res)=>{
 }))
 
 
-objectsRouter.post("/getSome", expressAsyncHandler(async(req,res)=>{
+objectsRouter.get("/getSome", expressAsyncHandler(async(req,res)=>{
         try{
             console.log("in sam some  ndpoint")
             const idsArray = req.body._ids;
@@ -51,11 +51,42 @@ objectsRouter.post("/getSome", expressAsyncHandler(async(req,res)=>{
              console.log(err)
         }
     }))
+
+
+    objectsRouter.post("/create", expressAsyncHandler(async(req,res)=>{
+        try{
+            console.log("in create  ndpoint")
+            const obj = req.body;
+            console.log(obj)
+            const createdObjId = await objCollection.insertOne({obj});
+            console.log(createdObjId)
+            res.send(createdObjId);
+        }
+
+        catch(err)
+        {
+             console.log(err)
+        }
+
+    }))
+
+
+
+    objectsRouter.delete("/delete/:id", expressAsyncHandler(async(req,res)=>{
+        try{
+            console.log("in delete  ndpoint")
+            const id = req.params.id;
+            console.log(id)
+            const obj = await objCollection.deleteOne({ _id: new ObjectId(id) });
+            console.log(obj)
+            res.send(obj)
+        }
+        catch(err)
+        {
+             console.log(err)
+        }
+    }))
    
-
-
-
-
 
 
 
