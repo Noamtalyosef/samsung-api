@@ -19,6 +19,21 @@ objectsRouter.get("/", expressAsyncHandler(async(req,res)=>{
     }
 }))
 
+objectsRouter.get("/getSome", expressAsyncHandler(async (req, res) => {
+    try {
+        console.log("in sam some endpoint")
+        const idsArray = req.query._ids;
+        console.log("query", req.query)
+        // Ensure idsArray is always an array
+        const objectIdArray = Array.isArray(idsArray) ? idsArray.map(id => new ObjectId(id)) : [new ObjectId(idsArray)];
+        const objects = await objCollection.find({ _id: { $in: objectIdArray } }).toArray();
+        console.log(objects)
+        res.send(objects)
+    }
+    catch (err) {
+        console.log("sam some ", err)
+    }
+}));
 
 objectsRouter.get("/:_id", expressAsyncHandler(async(req,res)=>{
     try{
@@ -37,21 +52,6 @@ objectsRouter.get("/:_id", expressAsyncHandler(async(req,res)=>{
 }))
 
 
-objectsRouter.get("/getSome", expressAsyncHandler(async (req, res) => {
-    try {
-        console.log("in sam some endpoint")
-        const idsArray = req.query._ids;
-        console.log("query", req.query)
-        // Ensure idsArray is always an array
-        const objectIdArray = Array.isArray(idsArray) ? idsArray.map(id => new ObjectId(id)) : [new ObjectId(idsArray)];
-        const objects = await objCollection.find({ _id: { $in: objectIdArray } }).toArray();
-        console.log(objects)
-        res.send(objects)
-    }
-    catch (err) {
-        console.log("sam some ", err)
-    }
-}));
 
 
     objectsRouter.post("/create", expressAsyncHandler(async(req,res)=>{
